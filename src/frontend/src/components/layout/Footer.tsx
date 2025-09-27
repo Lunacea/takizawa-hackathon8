@@ -1,7 +1,7 @@
 export default function Footer() {
   return (
-    <footer>
-      <p>Copyright © 2025 大和魂</p>
+    <footer className="flex flex-col justify-center items-center py-4 border-t border-border">
+      <p>Copyright © 2025 Team B YamatoDamashi</p>
     </footer>
   );
 }

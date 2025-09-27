@@ -1,7 +1,7 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
-@custom-variant dark (@media (prefers-color-scheme: dark));
+@custom-variant dark (&:is(.dark *));
 
 @theme inline {
   --color-background: var(--background);
@@ -117,66 +117,64 @@
   --sidebar-ring: oklch(0.4 0.15 250);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    /* セマンティックカラー - ダークモード */
-    --background: oklch(0.1 0 0);
-    --foreground: oklch(0.95 0 0);
+.dark {
+  /* セマンティックカラー - ダークモード */
+  --background: oklch(0.1 0 0);
+  --foreground: oklch(0.95 0 0);
 
-    /* プライマリカラー（メインブランドカラー） */
-    --primary: oklch(0.6 0.15 250); /* ブルー系（明るく） */
-    --primary-foreground: oklch(0.1 0 0);
+  /* プライマリカラー（メインブランドカラー） */
+  --primary: oklch(0.6 0.15 250); /* ブルー系（明るく） */
+  --primary-foreground: oklch(0.1 0 0);
 
-    /* セカンダリカラー（補助色） */
-    --secondary: oklch(0.2 0 0);
-    --secondary-foreground: oklch(0.95 0 0);
+  /* セカンダリカラー（補助色） */
+  --secondary: oklch(0.2 0 0);
+  --secondary-foreground: oklch(0.95 0 0);
 
-    /* アクセントカラー（強調色） */
-    --accent: oklch(0.6 0.2 120); /* グリーン系（明るく） */
-    --accent-foreground: oklch(0.1 0 0);
+  /* アクセントカラー（強調色） */
+  --accent: oklch(0.6 0.2 120); /* グリーン系（明るく） */
+  --accent-foreground: oklch(0.1 0 0);
 
-    /* 成功・警告・エラーカラー */
-    --success: oklch(0.7 0.15 140); /* グリーン（明るく） */
-    --success-foreground: oklch(0.1 0 0);
-    --warning: oklch(0.8 0.15 60); /* オレンジ（明るく） */
-    --warning-foreground: oklch(0.1 0 0);
-    --error: oklch(0.7 0.2 20); /* レッド（明るく） */
-    --error-foreground: oklch(0.95 0 0);
+  /* 成功・警告・エラーカラー */
+  --success: oklch(0.7 0.15 140); /* グリーン（明るく） */
+  --success-foreground: oklch(0.1 0 0);
+  --warning: oklch(0.8 0.15 60); /* オレンジ（明るく） */
+  --warning-foreground: oklch(0.1 0 0);
+  --error: oklch(0.7 0.2 20); /* レッド（明るく） */
+  --error-foreground: oklch(0.95 0 0);
 
-    /* 情報カラー */
-    --info: oklch(0.6 0.15 200); /* ライトブルー（明るく） */
-    --info-foreground: oklch(0.1 0 0);
+  /* 情報カラー */
+  --info: oklch(0.6 0.15 200); /* ライトブルー（明るく） */
+  --info-foreground: oklch(0.1 0 0);
 
-    /* ニュートラルカラー */
-    --muted: oklch(0.2 0 0);
-    --muted-foreground: oklch(0.6 0 0);
+  /* ニュートラルカラー */
+  --muted: oklch(0.2 0 0);
+  --muted-foreground: oklch(0.6 0 0);
 
-    /* UI要素 */
-    --card: oklch(0.15 0 0);
-    --card-foreground: oklch(0.95 0 0);
-    --popover: oklch(0.15 0 0);
-    --popover-foreground: oklch(0.95 0 0);
-    --border: oklch(0.3 0 0);
-    --input: oklch(0.3 0 0);
-    --ring: oklch(0.6 0.15 250);
+  /* UI要素 */
+  --card: oklch(0.15 0 0);
+  --card-foreground: oklch(0.95 0 0);
+  --popover: oklch(0.15 0 0);
+  --popover-foreground: oklch(0.95 0 0);
+  --border: oklch(0.3 0 0);
+  --input: oklch(0.3 0 0);
+  --ring: oklch(0.6 0.15 250);
 
-    /* チャートカラー */
-    --chart-1: oklch(0.6 0.15 250); /* プライマリ */
-    --chart-2: oklch(0.6 0.2 120); /* アクセント */
-    --chart-3: oklch(0.7 0.15 140); /* 成功 */
-    --chart-4: oklch(0.8 0.15 60); /* 警告 */
-    --chart-5: oklch(0.7 0.2 20); /* エラー */
+  /* チャートカラー */
+  --chart-1: oklch(0.6 0.15 250); /* プライマリ */
+  --chart-2: oklch(0.6 0.2 120); /* アクセント */
+  --chart-3: oklch(0.7 0.15 140); /* 成功 */
+  --chart-4: oklch(0.8 0.15 60); /* 警告 */
+  --chart-5: oklch(0.7 0.2 20); /* エラー */
 
-    /* サイドバー */
-    --sidebar: oklch(0.15 0 0);
-    --sidebar-foreground: oklch(0.95 0 0);
-    --sidebar-primary: oklch(0.6 0.15 250);
-    --sidebar-primary-foreground: oklch(0.1 0 0);
-    --sidebar-accent: oklch(0.2 0 0);
-    --sidebar-accent-foreground: oklch(0.95 0 0);
-    --sidebar-border: oklch(0.3 0 0);
-    --sidebar-ring: oklch(0.6 0.15 250);
-  }
+  /* サイドバー */
+  --sidebar: oklch(0.15 0 0);
+  --sidebar-foreground: oklch(0.95 0 0);
+  --sidebar-primary: oklch(0.6 0.15 250);
+  --sidebar-primary-foreground: oklch(0.1 0 0);
+  --sidebar-accent: oklch(0.2 0 0);
+  --sidebar-accent-foreground: oklch(0.95 0 0);
+  --sidebar-border: oklch(0.3 0 0);
+  --sidebar-ring: oklch(0.6 0.15 250);
 }
 
 @layer base {
