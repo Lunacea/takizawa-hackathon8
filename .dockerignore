@@ -1,0 +1,12 @@
+.git
+.github
+node_modules
+dist
+.tmp
+.env*
+Dockerfile
+docker-compose.yml
+.devcontainer
+README.md
+**/.DS_Store
+

@@ -1,0 +1,23 @@
+{
+  "recommendations": [
+    "biomejs.biome",
+    "prisma.prisma",
+    "bradlc.vscode-tailwindcss",
+    "ms-vscode-remote.remote-containers",
+    "github.vscode-github-actions",
+    "hashicorp.terraform",
+    "ms-azuretools.vscode-docker",
+    "streetsidesoftware.code-spell-checker",
+    "davidanson.vscode-markdownlint",
+    "esbenp.prettier-vscode",
+    "gruntfuggly.todo-tree",
+    "formulahendry.auto-rename-tag",
+    "formulahendry.auto-close-tag",
+    "aaron-bond.better-comments",
+    "eamodio.gitlens",
+    "mhutchie.git-graph",
+    "donjayamanne.git-extension-pack",
+    "oderwat.indent-rainbow"
+  ],
+  "unwantedRecommendations": []
+}

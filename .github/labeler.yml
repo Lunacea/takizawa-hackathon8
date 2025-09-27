@@ -1,0 +1,55 @@
+"area:docs":
+  - changed-files:
+      - any-glob-to-any-file:
+          - "**/*.md"
+
+"area:ci":
+  - changed-files:
+      - any-glob-to-any-file:
+          - ".github/workflows/**"
+          - ".github/*.yml"
+          - ".github/*.yaml"
+
+"area:infra":
+  - changed-files:
+      - any-glob-to-any-file:
+          - "infra/**"
+          - "terraform/**"
+
+"area:frontend":
+  - changed-files:
+      - any-glob-to-any-file:
+          - "src/frontend/**"
+
+"area:deps":
+  - changed-files:
+      - any-glob-to-any-file:
+          - "package.json"
+          - "bun.lock"
+
+"area:docker":
+  - changed-files:
+      - any-glob-to-any-file:
+          - "docker/**"
+          - "docker-compose.yml"
+          - ".dockerignore"
+
+"area:devcontainer":
+  - changed-files:
+      - any-glob-to-any-file:
+          - ".devcontainer/**"
+
+"area:prisma":
+  - changed-files:
+      - any-glob-to-any-file:
+          - "prisma/**"
+"area:shared":
+  - changed-files:
+      - any-glob-to-any-file:
+          - "src/lib/**"
+          - "src/components/**"
+"area:backend":
+  - changed-files:
+      - any-glob-to-any-file:
+          - "src/backend/**"
+

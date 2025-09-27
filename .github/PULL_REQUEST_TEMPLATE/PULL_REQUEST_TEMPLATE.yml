@@ -1,0 +1,59 @@
+name: Pull Request
+description: Submit a pull request to contribute changes
+title: "<type>: <short summary>"
+labels: []
+body:
+  - type: textarea
+    id: summary
+    attributes:
+      label: Summary
+      description: Describe the change in 1-2 sentences.
+    validations:
+      required: true
+  - type: checkboxes
+    id: change_type
+    attributes:
+      label: Type of change
+      options:
+        - label: feat
+        - label: fix
+        - label: docs
+        - label: refactor
+        - label: test
+        - label: chore / ci / build / perf
+  - type: textarea
+    id: testing
+    attributes:
+      label: Testing instructions
+      description: How to verify the change locally/CI.
+      value: |
+        - 
+        - 
+  - type: textarea
+    id: risk
+    attributes:
+      label: Risk / Impact (optional)
+      description: Potential impact and mitigation.
+  - type: input
+    id: issues
+    attributes:
+      label: Related issues
+      description: Use "Closes #<id>" to auto-close.
+      placeholder: Closes #123
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Checklist
+      options:
+        - label: Linters pass (Biome, markdownlint)
+        - label: Type checks pass (tsc --noEmit)
+        - label: Tests pass (bun test)
+        - label: Build passes (bun run build)
+        - label: Docs updated (README/DESIGN/PROMPTS if needed)
+        - label: Security checks (Trivy/CodeQL/gitleaks) if applicable
+  - type: textarea
+    id: logs
+    attributes:
+      label: Screenshots / Logs
+      render: shell
+

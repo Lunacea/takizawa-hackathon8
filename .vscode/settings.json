@@ -1,0 +1,76 @@
+{
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll": "explicit",
+    "source.organizeImports": "explicit"
+  },
+  "biome.enabled": true,
+  "[typescript]": {
+    "editor.defaultFormatter": "biomejs.biome"
+  },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "biomejs.biome"
+  },
+  "[javascript]": {
+    "editor.defaultFormatter": "biomejs.biome"
+  },
+  "[markdown]": {
+    "editor.wordWrap": "bounded"
+  },
+  "todo-tree.general.tags": [
+    "WARNING",
+    "BUG",
+    "HACK",
+    "FIXME",
+    "TODO",
+    "REVIEW",
+    "NOTE",
+    "[ ]",
+    "[x]"
+  ],
+  "todo-tree.regex.regex": "(// |# |<!-- |; |/\\* |^[ \\t]*(- |\\d+\\. ))\\s*($TAGS):",
+  "todo-tree.highlights.backgroundColourScheme": [
+    "red",
+    "orange",
+    "yellow",
+    "green",
+    "blue",
+    "indigo",
+    "violet"
+  ],
+  "todo-tree.highlights.customHighlight": {
+    "WARNING": { "icon": "alert", "foreground": "#B45460" },
+    "BUG": { "foreground": "#F0566E" },
+    "HACK": { "foreground": "#B455A0" },
+    "FIXME": { "foreground": "#FCAF17" },
+    "TODO": { "foreground": "#00B379" },
+    "REVIEW": { "icon": "code-review", "foreground": "#21A0DB" },
+    "NOTE": { "icon": "pencil", "foreground": "#A4D5BD" }
+  },
+  "better-comments.tags": [
+    {
+      "tag": "WARNING",
+      "strikethrough": false,
+      "backgroundColor": "transparent",
+      "color": "#B45460"
+    },
+    { "tag": "BUG", "strikethrough": false, "backgroundColor": "transparent", "color": "#F0566E" },
+    { "tag": "HACK", "strikethrough": false, "backgroundColor": "transparent", "color": "#B455A0" },
+    {
+      "tag": "FIXME",
+      "strikethrough": false,
+      "backgroundColor": "transparent",
+      "color": "#A3A649"
+    },
+    { "tag": "TODO", "strikethrough": false, "backgroundColor": "transparent", "color": "#00B379" },
+    {
+      "tag": "REVIEW",
+      "strikethrough": false,
+      "backgroundColor": "transparent",
+      "color": "#21A0DB"
+    },
+    { "tag": "NOTE", "strikethrough": false, "backgroundColor": "transparent", "color": "#A4D5BD" }
+  ],
+  "files.eol": "\n",
+  "terminal.integrated.defaultProfile.windows": "PowerShell"
+}

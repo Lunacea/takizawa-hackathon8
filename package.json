@@ -1,0 +1,59 @@
+{
+  "name": "web-template",
+  "version": "0.1.0",
+  "description": "Modern web app template with Bun, TypeScript, (React/Vue/Svelte-ready), Tailwind CSS, Prisma, Docker, Terraform, GitHub Actions, Biome, Husky, commitlint, Renovate, semantic-release.",
+  "license": "UNLICENSED",
+  "private": true,
+  "scripts": {
+    "prepare": "husky install",
+    "dev": "bun run test:watch",
+    "build": "echo 'no UI framework selected yet' && exit 0",
+    "start": "bun run server",
+    "server": "bun src/backend/server.ts",
+    "lint": "bun x @biomejs/biome ci .",
+    "lint:fix": "bun x @biomejs/biome check --apply .",
+    "typecheck": "tsc --noEmit",
+    "test": "bun test",
+    "db:generate": "bun x prisma generate",
+    "db:migrate": "bun x prisma migrate dev",
+    "storybook": "echo 'UI未選定のため無効' && exit 0",
+    "storybook:build": "echo 'UI未選定のため無効' && exit 0",
+    "md:lint": "bun x markdownlint . --ignore node_modules",
+    "md:lint:fix": "bun x markdownlint . --ignore node_modules --fix",
+    "test:watch": "bun test --watch",
+    "release": "bun x semantic-release",
+    "fix": "bun tools/fix.ts",
+    "branch:new": "bun tools/branch.ts",
+    "issue:new": "bun tools/issue.ts",
+    "pr:new": "bun tools/pr.ts",
+    "gh:flow": "bun tools/gh-flow.ts",
+    "commit:quick": "bun tools/quick-commit.ts"
+  },
+  "dependencies": {
+    "@prisma/client": "^6.14.0",
+    "zod": "^4.0.17"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.2.0",
+    "@commitlint/cli": "^19.3.0",
+    "@commitlint/config-conventional": "^19.2.2",
+    "markdownlint-cli": "^0.41.0",
+    "@semantic-release/changelog": "^6.0.3",
+    "@semantic-release/commit-analyzer": "^13.0.0",
+    "@semantic-release/git": "^10.0.1",
+    "@semantic-release/github": "^11.0.4",
+    "@semantic-release/release-notes-generator": "^14.0.1",
+    "bun-types": "^1.2.20",
+    "concurrently": "^9.0.1",
+    "http-server": "^14.1.1",
+    "husky": "^9.1.4",
+    "prisma": "^6.14.0",
+    "semantic-release": "^24.0.0",
+    "markdownlint": "^0.38.0",
+    "tailwindcss": "^4.1.12",
+    "typescript": "^5.5.4"
+  },
+  "engines": {
+    "bun": ">=1.1.0"
+  }
+}

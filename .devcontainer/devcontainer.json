@@ -1,0 +1,20 @@
+{
+  "name": "web-template",
+  "build": {
+    "dockerfile": "Dockerfile",
+    "context": ".."
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "biomejs.biome",
+        "prisma.prisma",
+        "bradlc.vscode-tailwindcss",
+        "cursor.cursor-vscode",
+        "anthropic.claude-vscode"
+      ]
+    }
+  },
+  "postCreateCommand": "bun install",
+  "remoteUser": "vscode"
+}

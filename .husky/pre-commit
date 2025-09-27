@@ -1,0 +1,5 @@
+#!/usr/bin/env sh
+
+bun x @biomejs/biome check --write .
+bun run md:lint
+

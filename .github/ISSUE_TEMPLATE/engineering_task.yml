@@ -1,0 +1,100 @@
+name: Engineering task
+description: A structured engineering task for implementation or refactor
+labels: [enhancement]
+title: "feat: <short summary>"
+body:
+  - type: textarea
+    id: context
+    attributes:
+      label: Context
+      description: Why is this needed? Link related issues/PRs.
+    validations:
+      required: true
+  - type: textarea
+    id: scope
+    attributes:
+      label: Scope
+      description: What will be done? Enumerate concrete work items.
+      value: |
+        - 
+        - 
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance criteria
+      description: Define done in bullet points.
+      value: |
+        - 
+        - 
+    validations:
+      required: true
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priority (optional)
+      options:
+        - P0
+        - P1
+        - P2
+    validations:
+      required: false
+  - type: textarea
+    id: risks
+    attributes:
+      label: Risks / Rollback
+      description: Known risks, mitigation, and rollback plan.
+  - type: textarea
+    id: impact
+    attributes:
+      label: Impact (optional)
+      description: Affected components/services/users.
+  - type: textarea
+    id: outofscope
+    attributes:
+      label: Out of scope
+      description: Explicitly list what is not included.
+  - type: textarea
+    id: refs
+    attributes:
+      label: References
+      description: Links to docs/specs/PRDs.
+
+  # Optional: AI helper fields (human contributors can skip)
+  - type: checkboxes
+    id: handler
+    attributes:
+      label: Handler (optional)
+      options:
+        - label: Human
+        - label: AI agent
+        - label: Pair (Human + AI)
+  - type: input
+    id: prompt_profile
+    attributes:
+      label: Prompt profile (PROMPTS.md) (optional)
+      description: e.g., "CI / CD", "Docker", "IaC / Terraform", "Backend"
+    validations:
+      required: false
+  - type: textarea
+    id: constraints
+    attributes:
+      label: Constraints & gates (optional)
+      description: Security/quality gates and repository rules to obey
+      value: |
+        - Least privileges (GitHub Actions permissions)
+        - Trivy: fail on CRITICAL/HIGH
+        - Minimal diffs, keep indentation, Conventional Commits
+        - bun run md:lint && bun run typecheck && bun run test must pass
+  - type: textarea
+    id: expected_output
+    attributes:
+      label: Expected output (optional)
+      description: Deliverables and how to validate
+      value: |
+        - Edits: <files>
+        - New files: <paths>
+        - Commands to run: <...>
+        - Acceptance checks: CI green; security gates effective
+
