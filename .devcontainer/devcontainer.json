@@ -1,20 +1,70 @@
 {
-  "name": "web-template",
-  "build": {
-    "dockerfile": "Dockerfile",
-    "context": ".."
+  "name": "Takizawa Hackathon8 Dev Container",
+  "dockerComposeFile": "../docker-compose.yml",
+  "service": "app",
+  "workspaceFolder": "/app",
+  "shutdownAction": "stopCompose",
+  "features": {
+    "ghcr.io/devcontainers/features/git:1": {},
+    "ghcr.io/devcontainers/features/github-cli:1": {}
   },
   "customizations": {
     "vscode": {
       "extensions": [
-        "biomejs.biome",
-        "prisma.prisma",
+        "ms-vscode.vscode-typescript-next",
         "bradlc.vscode-tailwindcss",
-        "cursor.cursor-vscode",
-        "anthropic.claude-vscode"
-      ]
+        "esbenp.prettier-vscode",
+        "ms-vscode.vscode-json",
+        "prisma.prisma",
+        "ms-vscode.vscode-eslint",
+        "ms-vscode.vscode-typescript-next",
+        "ms-vscode.vscode-json",
+        "ms-vscode.vscode-yaml",
+        "redhat.vscode-yaml",
+        "ms-vscode.vscode-docker",
+        "ms-vscode.vscode-github-actions",
+        "ms-vscode.vscode-terraform",
+        "ms-vscode.vscode-markdown",
+        "ms-vscode.vscode-github-pullrequest",
+        "ms-vscode.vscode-github-issues"
+      ],
+      "settings": {
+        "typescript.preferences.importModuleSpecifier": "relative",
+        "editor.formatOnSave": true,
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
+        "editor.codeActionsOnSave": {
+          "source.fixAll.eslint": "explicit"
+        },
+        "files.exclude": {
+          "**/node_modules": true,
+          "**/.next": true,
+          "**/dist": true,
+          "**/.docker-cache": true
+        },
+        "search.exclude": {
+          "**/node_modules": true,
+          "**/.next": true,
+          "**/dist": true,
+          "**/.docker-cache": true
+        }
+      }
     }
   },
-  "postCreateCommand": "bun install",
-  "remoteUser": "vscode"
+  "forwardPorts": [3000, 3001, 5432],
+  "portsAttributes": {
+    "3000": {
+      "label": "Next.js Frontend",
+      "onAutoForward": "notify"
+    },
+    "3001": {
+      "label": "Backend API",
+      "onAutoForward": "silent"
+    },
+    "5432": {
+      "label": "PostgreSQL",
+      "onAutoForward": "silent"
+    }
+  },
+  "postCreateCommand": "bun install && cd src/frontend && bun install && cd ../.. && bun x prisma generate",
+  "remoteUser": "root"
 }
