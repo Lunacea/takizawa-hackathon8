@@ -24,8 +24,8 @@
     "db:migrate": "bun x prisma migrate dev",
     "storybook": "echo 'UI未選定のため無効' && exit 0",
     "storybook:build": "echo 'UI未選定のため無効' && exit 0",
-    "md:lint": "bun x markdownlint . --ignore node_modules",
-    "md:lint:fix": "bun x markdownlint . --ignore node_modules --fix",
+    "md:lint": "bun x markdownlint . --ignore node_modules --ignore src/frontend",
+    "md:lint:fix": "bun x markdownlint . --ignore node_modules --ignore src/frontend --fix",
     "test:watch": "bun test --watch",
     "release": "bun x semantic-release",
     "fix": "bun tools/fix.ts",
@@ -36,28 +36,28 @@
     "commit:quick": "bun tools/quick-commit.ts"
   },
   "dependencies": {
-    "@prisma/client": "^6.14.0",
-    "zod": "^4.0.17"
+    "@prisma/client": "^6.16.2",
+    "zod": "^4.1.11"
   },
   "devDependencies": {
-    "@biomejs/biome": "^2.2.0",
-    "@commitlint/cli": "^19.3.0",
-    "@commitlint/config-conventional": "^19.2.2",
+    "@biomejs/biome": "^2.2.4",
+    "@commitlint/cli": "^19.8.1",
+    "@commitlint/config-conventional": "^19.8.1",
     "markdownlint-cli": "^0.41.0",
     "@semantic-release/changelog": "^6.0.3",
-    "@semantic-release/commit-analyzer": "^13.0.0",
+    "@semantic-release/commit-analyzer": "^13.0.1",
     "@semantic-release/git": "^10.0.1",
-    "@semantic-release/github": "^11.0.4",
-    "@semantic-release/release-notes-generator": "^14.0.1",
-    "bun-types": "^1.2.20",
-    "concurrently": "^9.0.1",
+    "@semantic-release/github": "^11.0.6",
+    "@semantic-release/release-notes-generator": "^14.1.0",
+    "bun-types": "^1.2.22",
+    "concurrently": "^9.2.1",
     "http-server": "^14.1.1",
-    "husky": "^9.1.4",
-    "prisma": "^6.14.0",
-    "semantic-release": "^24.0.0",
+    "husky": "^9.1.7",
+    "prisma": "^6.16.2",
+    "semantic-release": "^24.2.9",
     "markdownlint": "^0.38.0",
-    "tailwindcss": "^4.1.12",
-    "typescript": "^5.5.4"
+    "tailwindcss": "^4.1.13",
+    "typescript": "^5.9.2"
   },
   "engines": {
     "bun": ">=1.1.0"

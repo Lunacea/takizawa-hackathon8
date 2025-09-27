@@ -1,0 +1,77 @@
+# Next.js build files
+.next/
+.next/**
+src/frontend/.next/
+src/frontend/.next/**
+src/frontend/.next/**
+src/frontend/.next/server/**
+src/frontend/.next/server/chunks/**
+src/frontend/.next/server/chunks/ssr/**
+
+# Dependencies
+node_modules/
+node_modules/**
+src/frontend/node_modules/
+src/frontend/node_modules/**
+
+# Build outputs
+dist/
+dist/**
+build/
+build/**
+out/
+out/**
+src/frontend/dist/
+src/frontend/dist/**
+src/frontend/build/
+src/frontend/build/**
+src/frontend/out/
+src/frontend/out/**
+
+# Docker cache
+.docker-cache/
+.docker-cache/**
+
+# Test coverage
+coverage/
+coverage/**
+
+# Minified files
+*.min.js
+*.min.css
+
+# Prisma migrations
+prisma/migrations/
+prisma/migrations/**
+
+# Generated files
+*.tsbuildinfo
+next-env.d.ts
+src/frontend/next-env.d.ts
+src/frontend/.next/
+src/frontend/out/
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+
+# Temporary files
+.tmp/
+.temp/
+
+# Specific Next.js patterns
+**/*.js.map
+**/chunks/**
+**/server/**
+**/static/**
+**/cache/**

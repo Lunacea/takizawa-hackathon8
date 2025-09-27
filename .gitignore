@@ -8,6 +8,8 @@ bun.lock
 dist/
 .tmp/
 .docker-cache/
+.next/
+out/
 
 # Env
 .env
