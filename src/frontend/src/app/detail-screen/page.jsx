@@ -1,6 +1,6 @@
 import { Table, TableBody, TableRow, TableHead, TableCell } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import CommentSection from "../components/Comment/CommentSection.jsx";
+import CommentSection from "../../components/Comment/CommentSection.jsx";
 
 export default function Home() {
   return (
@@ -76,26 +76,7 @@ export default function Home() {
 
       {/* コメント欄 */}
       <div className="space-y-2">
-        <h2 className="text-xl font-semibold">コメント</h2>
-        <textarea
-          className="w-full border border-gray-300 rounded p-2"
-          rows={4}
-          placeholder="コメントを入力"
-        ></textarea>
-
         <CommentSection />
-
-        {/* 投稿ボタン */}
-        <div className="flex justify-end">
-          <Button className="bg-blue-500 text-white font-bold px-6 py-2 rounded hover:bg-blue-400">投稿</Button>
-        </div>
-
-        <div className="space-y-1 text-gray-600 text-sm">
-          <p>
-            作成日時: <time dateTime="2025-09-27T10:00">2025/09/27</time>
-            更新日時: <time dateTime="2025-09-27T14:00">2025/09/27</time>
-          </p>
-        </div>
 
         {/* 作成/更新日時 */}
         <div className="space-y-1 text-gray-600 text-sm">
