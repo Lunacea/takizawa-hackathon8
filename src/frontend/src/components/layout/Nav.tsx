@@ -36,7 +36,7 @@ const styles = {
   tabBar: "flex items-center justify-between",
   tabLink: "flex flex-1 flex-col items-center gap-1 py-2 text-xs transition-colors border-b-2 border-transparent select-none",
   icon: "w-5 h-5",
-  active: "text-primary border-primary cursor-default pointer-events-none",
+  active: "text-primary border-primary border-b-4 cursor-default pointer-events-none",
   inactive: "text-gray-600 dark:text-gray-300 hover:text-primary",
 } as const;
 
@@ -70,7 +70,7 @@ export default function Nav() {
   };
 
   return (
-    <nav className="w-full" aria-label="メインタブ ナビゲーション">
+    <nav className="w-full bg-gray-100 dark:bg-gray-900" aria-label="メインタブ ナビゲーション">
       <div className={styles.container}>
         <div className={styles.tabBar}>
           {navItems.map((item) => (
