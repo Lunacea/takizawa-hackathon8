@@ -10,6 +10,7 @@ import { useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { databases, DATABASE_CONFIG, ID } from "@/lib/appwrite/appwrite";
 import { useRouter } from "next/navigation";
+import { uploadProjectImage, getProjectImagePreviewUrl } from "@/lib/appwrite/storage";
 
 export default function PostRequestForm() {
   const router = useRouter();
@@ -23,6 +24,7 @@ export default function PostRequestForm() {
   const [bonusCondition, setBonusCondition] = useState("");
   const [requirements, setRequirements] = useState("");
   const [imageUrl, setImageUrl] = useState("");
+  const [imageFile, setImageFile] = useState<File | null>(null);
   const [deadline, setDeadline] = useState("");
   const [headcount, setHeadcount] = useState<number | ''>("");
   const [status, setStatus] = useState<'DRAFT' | 'OPEN' | 'CLOSED' | 'COMPLETED'>("DRAFT");
@@ -48,6 +50,11 @@ export default function PostRequestForm() {
         detail ? `\n\n【詳細】\n${detail}` : '',
       ].join('');
       const docId = ID.unique();
+      let imageToSave: string | undefined = imageUrl || undefined;
+      if (imageFile) {
+        const fileId = await uploadProjectImage(imageFile);
+        imageToSave = fileId;
+      }
       const doc = await databases.createDocument({
         databaseId: DATABASE_CONFIG.databaseId,
         collectionId: DATABASE_CONFIG.projectsCollectionId,
@@ -56,7 +63,7 @@ export default function PostRequestForm() {
           requesterId: user!.$id,
           title,
           description: descriptionToSend,
-          image_url: imageUrl || undefined,
+          image_url: imageToSave,
           deadline: deadline || undefined,
           headcount: headcount === '' ? undefined : Number(headcount),
           status: publish ? 'OPEN' : 'DRAFT',
@@ -123,8 +130,20 @@ export default function PostRequestForm() {
             <Input type="number" value={headcount} onChange={(e) => setHeadcount(e.target.value === '' ? '' : Number(e.target.value))} />
           </div>
           <div className="flex flex-col gap-4 py-4">
-            <Label>画像URL</Label>
-            <Input type="url" value={imageUrl} onChange={(e) => setImageUrl(e.target.value)} placeholder="https://..." />
+            <Label>サムネイル画像（jpg/png/webp）</Label>
+            <Input type="file" accept="image/*" onChange={(e) => setImageFile(e.target.files?.[0] ?? null)} />
+            <div className="text-xs text-muted-foreground">URL入力も可（上級者向け）</div>
+            <Label>画像URL（任意）</Label>
+            <Input type="url" value={imageUrl} onChange={(e) => setImageUrl(e.target.value)} placeholder="storageのfileId または https://..." />
+            {imageUrl && (
+              <div className="mt-2">
+                <img
+                  src={imageUrl.startsWith('http') ? imageUrl : getProjectImagePreviewUrl(imageUrl)}
+                  alt="preview"
+                  className="h-32 w-32 object-cover border rounded"
+                />
+              </div>
+            )}
           </div>
           <div className="flex flex-col gap-4 py-4">
             <Label>参加報酬</Label>

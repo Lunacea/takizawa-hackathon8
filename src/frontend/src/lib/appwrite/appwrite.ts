@@ -1,4 +1,4 @@
-import { Client, Account, Databases, ID, Query, type Models } from 'appwrite';
+import { Client, Account, Databases, Storage, ID, Query, type Models } from 'appwrite';
 import appwriteConfig from '../../../appwrite.config.json';
 
 // 型: appwrite.config.json の最小限の構造
@@ -23,6 +23,7 @@ const client = new Client()
 // サービス
 export const account = new Account(client);
 export const databases = new Databases(client);
+export const storage = new Storage(client);
 
 // データベースとコレクションのID（config から解決）
 const resolvedDatabaseId = cfg.databases.find((d: AppwriteDatabaseConfig) => d.$id === 'our-knot-db')?.$id
@@ -33,12 +34,27 @@ const resolvedProjectsCollectionId = cfg.collections.find((c: AppwriteCollection
   ?? 'projects';
 const resolvedProjectParticipantsCollectionId = cfg.collections.find((c: AppwriteCollectionConfig) => c.$id === 'project_participants')?.$id
   ?? 'project_participants';
+const resolvedCommentsCollectionId = cfg.collections.find((c: AppwriteCollectionConfig) => c.$id === 'comments')?.$id
+  ?? 'comments';
 
 export const DATABASE_CONFIG = {
   databaseId: resolvedDatabaseId,
   profilesCollectionId: resolvedProfilesCollectionId,
   projectsCollectionId: resolvedProjectsCollectionId,
   projectParticipantsCollectionId: resolvedProjectParticipantsCollectionId,
+  commentsCollectionId: resolvedCommentsCollectionId,
+} as const;
+
+// バケットID解決
+interface AppwriteBucketConfig { $id: string; name?: string }
+const imagesBucket = (cfg as any).buckets?.find((b: AppwriteBucketConfig) => b.$id === 'images')?.$id ?? 'images';
+// 単一バケット運用: 両用途とも images を使う
+const resolvedAvatarsBucketId = imagesBucket;
+const resolvedProjectImagesBucketId = imagesBucket;
+
+export const BUCKETS = {
+  avatarsBucketId: resolvedAvatarsBucketId,
+  projectImagesBucketId: resolvedProjectImagesBucketId,
 } as const;
 
 // ユーザープロファイルの型定義

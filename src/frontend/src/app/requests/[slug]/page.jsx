@@ -5,6 +5,8 @@ import { useParams } from "next/navigation";
 import { databases, DATABASE_CONFIG, ID, Query } from "@/lib/appwrite/appwrite";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
+import { getProjectImagePreviewUrl } from "@/lib/appwrite/storage";
+import CommentSection from "@/components/comment/CommentSection.jsx";
 import {
   Table,
   TableBody,
@@ -144,7 +146,12 @@ export default function RequestDetail() {
         <div className="p-4">
           <img
             className="w-full max-w-2xl rounded"
-            src={data.image_url}
+            src={
+              typeof data.image_url === "string" &&
+              data.image_url.startsWith("http")
+                ? data.image_url
+                : getProjectImagePreviewUrl(String(data.image_url))
+            }
             alt={data.title}
           />
         </div>
@@ -197,6 +204,9 @@ export default function RequestDetail() {
           {joinMessage}
         </div>
       )}
+
+      {/* コメント欄 */}
+      <CommentSection projectId={String(slug)} />
     </div>
   );
 }

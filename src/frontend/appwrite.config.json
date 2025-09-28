@@ -37,6 +37,28 @@
             "indexes": []
         },
         {
+            "$id": "comments",
+            "databaseId": "our-knot-db",
+            "name": "Comments",
+            "enabled": true,
+            "$permissions": [
+                "read(\"any\")",
+                "create(\"users\")"
+            ],
+            "documentSecurity": true,
+            "attributes": [
+                { "key": "projectId", "type": "string", "size": 255, "required": true, "array": false },
+                { "key": "userId", "type": "string", "size": 255, "required": true, "array": false },
+                { "key": "content", "type": "string", "size": 10000, "required": true, "array": false },
+                { "key": "type", "type": "string", "size": 50, "required": true, "elements": ["comment", "question"], "array": false },
+                { "key": "parentId", "type": "string", "size": 255, "required": false, "array": false }
+            ],
+            "indexes": [
+                { "key": "idx_projectId", "type": "key", "attributes": ["projectId"] },
+                { "key": "idx_parentId", "type": "key", "attributes": ["parentId"] }
+            ]
+        },
+        {
             "$id": "projects",
             "databaseId": "our-knot-db",
             "name": "Projects",
@@ -123,5 +145,20 @@
             "indexes": []
         }
     ],
-    "functions": []
+    "functions": [],
+    "buckets": [
+        {
+            "$id": "images",
+            "name": "Images",
+            "fileSecurity": true,
+            "permissions": [
+                "read(\"any\")",
+                "create(\"users\")"
+            ],
+            "encryption": true,
+            "antivirus": false,
+            "maximumFileSize": 10485760,
+            "allowedFileExtensions": ["jpg", "jpeg", "png", "webp"]
+        }
+    ]
 }
