@@ -31,11 +31,11 @@ export default function UserMenu() {
   return (
     <div className="flex items-center gap-3">
       <Avatar className="w-8 h-8">
-        <AvatarImage src={profile.avatar_url || '/KoeTasu-light.png'} alt={profile.username} />
-        <AvatarFallback>{profile.username.charAt(0).toUpperCase()}</AvatarFallback>
+        <AvatarImage src={profile.avatar_url || '/KoeTasu-light.png'} alt={profile.username || 'user'} />
+        <AvatarFallback>{(profile.username?.charAt(0).toUpperCase()) ?? '?'}</AvatarFallback>
       </Avatar>
       <div className="hidden md:block">
-        <p className="text-sm font-medium">{profile.username}</p>
+        <p className="text-sm font-medium">{profile.username ?? 'ユーザー'}</p>
         <p className="text-xs text-muted-foreground">{profile.role}</p>
       </div>
       <Button variant="outline" size="sm" onClick={logout}>

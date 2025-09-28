@@ -29,10 +29,13 @@ const resolvedDatabaseId = cfg.databases.find((d: AppwriteDatabaseConfig) => d.$
   ?? cfg.databases[0].$id;
 const resolvedProfilesCollectionId = cfg.collections.find((c: AppwriteCollectionConfig) => c.$id === 'profiles')?.$id
   ?? 'profiles';
+const resolvedProjectsCollectionId = cfg.collections.find((c: AppwriteCollectionConfig) => c.$id === 'projects')?.$id
+  ?? 'projects';
 
 export const DATABASE_CONFIG = {
   databaseId: resolvedDatabaseId,
   profilesCollectionId: resolvedProfilesCollectionId,
+  projectsCollectionId: resolvedProjectsCollectionId,
 } as const;
 
 // ユーザープロファイルの型定義

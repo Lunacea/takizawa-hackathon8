@@ -21,16 +21,17 @@
             ],
             "documentSecurity": true,
             "attributes": [
-                { "key": "username", "type": "string", "size": 100, "required": true, "array": false },
-                { "key": "avatar_url", "type": "string", "size": 2048, "required": false, "array": false },
-                { "key": "bio", "type": "string", "size": 1000, "required": false, "array": false },
+                { "key": "username", "type": "string", "size": 100, "required": true, "array": false, "encrypt": false },
+                { "key": "avatar_url", "type": "string", "size": 2048, "required": false, "array": false, "encrypt": false },
+                { "key": "bio", "type": "string", "size": 1000, "required": false, "array": false, "encrypt": false },
                 {
                     "key": "role",
                     "type": "string",
                     "size": 50,
                     "required": true,
                     "elements": ["REQUESTER", "PARTICIPANT"],
-                    "array": false
+                    "array": false,
+                    "encrypt": false
                 }
             ],
             "indexes": []
@@ -46,23 +47,27 @@
             ],
             "documentSecurity": true,
             "attributes": [
-                { "key": "requesterId", "type": "string", "size": 255, "required": true, "array": false },
-                { "key": "title", "type": "string", "size": 255, "required": true, "array": false },
-                { "key": "description", "type": "string", "size": 10000, "required": true, "array": false },
+                { "key": "requesterId", "type": "string", "size": 255, "required": true, "array": false, "encrypt": false },
+                { "key": "title", "type": "string", "size": 255, "required": true, "array": false, "encrypt": false },
+                { "key": "description", "type": "string", "size": 10000, "required": true, "array": false, "encrypt": false },
                 {
                     "key": "status",
                     "type": "string",
                     "size": 50,
                     "required": true,
                     "elements": ["DRAFT", "OPEN", "CLOSED", "COMPLETED"],
-                    "array": false
+                    "array": false,
+                    "encrypt": false
                 },
-                { "key": "participation_reward", "type": "string", "size": 255, "required": true, "array": false },
-                { "key": "bonus_reward", "type": "string", "size": 255, "required": false, "array": false }
+                { "key": "participation_reward", "type": "string", "size": 255, "required": true, "array": false, "encrypt": false },
+                { "key": "bonus_reward", "type": "string", "size": 255, "required": false, "array": false, "encrypt": false },
+                { "key": "bonus_condition", "type": "string", "size": 1000, "required": false, "array": false, "encrypt": false },
+                { "key": "category", "type": "string", "size": 100, "required": false, "array": false, "encrypt": false },
+                { "key": "image_url", "type": "string", "size": 2048, "required": false, "array": false, "encrypt": false },
+                { "key": "deadline", "type": "string", "size": 50, "required": false, "array": false, "encrypt": false },
+                { "key": "headcount", "type": "integer", "required": false, "array": false, "min": -9223372036854775808, "max": 9223372036854775807 }
             ],
-            "indexes": [
-                { "key": "idx_requester", "type": "key", "attributes": ["requesterId"], "orders": ["ASC"] }
-            ]
+            "indexes": []
         },
         {
             "$id": "project_participants",
