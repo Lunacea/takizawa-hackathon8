@@ -87,7 +87,13 @@
                 { "key": "category", "type": "string", "size": 100, "required": false, "array": false, "encrypt": false },
                 { "key": "image_url", "type": "string", "size": 2048, "required": false, "array": false, "encrypt": false },
                 { "key": "deadline", "type": "string", "size": 50, "required": false, "array": false, "encrypt": false },
-                { "key": "headcount", "type": "integer", "required": false, "array": false, "min": -9223372036854775808, "max": 9223372036854775807 }
+                { "key": "headcount", "type": "integer", "required": false, "array": false, "min": -9223372036854775808, "max": 9223372036854775807 },
+                { "key": "organizer", "type": "string", "size": 255, "required": false, "array": false, "encrypt": false },
+                { "key": "event_date", "type": "string", "size": 100, "required": false, "array": false, "encrypt": false },
+                { "key": "place", "type": "string", "size": 255, "required": false, "array": false, "encrypt": false },
+                { "key": "genre", "type": "string", "size": 100, "required": false, "array": false, "encrypt": false },
+                { "key": "lat", "type": "double", "required": false, "array": false },
+                { "key": "lng", "type": "double", "required": false, "array": false }
             ],
             "indexes": []
         },

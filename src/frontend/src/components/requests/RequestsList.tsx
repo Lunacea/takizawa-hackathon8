@@ -1,10 +1,12 @@
 "use client";
 
-// useStateをreactからインポート
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Calendar, MapPin } from "lucide-react";
+import Link from "next/link";
 import dynamic from "next/dynamic";
 import type { MapProps } from "@/components/ui/list_page/map";
+import { databases, DATABASE_CONFIG, Query } from "@/lib/appwrite/appwrite";
+import { getProjectImagePreviewUrl } from "@/lib/appwrite/storage";
 
 const Map = dynamic(
   () => import('@/components/ui/list_page/map').then((mod) => mod.default),
@@ -26,7 +28,7 @@ type Volunteer = {
 };
 
 const volunteers: Volunteer[] = [
-    {
+  {
     id: 1,
     title: "大学祭のポスター作成",
     organizer: "岩手県立大学 大学祭実行委員会",
@@ -64,7 +66,7 @@ const volunteers: Volunteer[] = [
     place: "巣子集会所",
     genre: "デザイン",
     position: [39.776569, 141.134145],
-    imageUrl:" "
+    imageUrl: " "
   },
   {
     id: 5,
@@ -74,7 +76,7 @@ const volunteers: Volunteer[] = [
     place: "NV cafe",
     genre: "IT",
     position: [39.798645, 141.142253],
-    imageUrl:" "
+    imageUrl: " "
   },
   {
     id: 6,
@@ -84,7 +86,7 @@ const volunteers: Volunteer[] = [
     place: "アポロリンクスゴルフ練習場",
     genre: "IT",
     position: [39.787807, 141.144479],
-    imageUrl:" "
+    imageUrl: " "
   },
   {
     id: 7,
@@ -94,7 +96,7 @@ const volunteers: Volunteer[] = [
     place: "American Cafe DENVERS",
     genre: "IT",
     position: [39.77873, 141.143332],
-    imageUrl:" "
+    imageUrl: " "
   },
   {
     id: 8,
@@ -104,7 +106,7 @@ const volunteers: Volunteer[] = [
     place: "麺や きぶし",
     genre: "IT",
     position: [39.774978, 141.130459],
-    imageUrl:" "
+    imageUrl: " "
   },
   {
     id: 9,
@@ -114,7 +116,7 @@ const volunteers: Volunteer[] = [
     place: "Cafe Wagtail",
     genre: "デザイン",
     position: [39.798894, 141.149387],
-    imageUrl:" "
+    imageUrl: " "
   },
   {
     id: 10,
@@ -124,7 +126,7 @@ const volunteers: Volunteer[] = [
     place: "滝沢市役所",
     genre: "SNS投稿",
     position: [39.735043, 141.077846],
-    imageUrl:" "
+    imageUrl: " "
   },
   {
     id: 11,
@@ -134,7 +136,7 @@ const volunteers: Volunteer[] = [
     place: "りもーね",
     genre: "デザイン",
     position: [39.799132, 141.14735],
-    imageUrl:" "
+    imageUrl: " "
   },
   {
     id: 12,
@@ -144,13 +146,37 @@ const volunteers: Volunteer[] = [
     place: "盛岡観光コンベンション協会",
     genre: "SNS投稿",
     position: [39.7001, 141.154744],
-    imageUrl:" "
+    imageUrl: " "
   },
 ];
 
+type ProjectDoc = any;
+
 export default function VolunteerListPage() {
-  // 表示する地図のIDを管理するためのstate (初期値はnullで地図は非表示)
-  const [visibleMapId, setVisibleMapId] = useState<number | null>(null);
+  const [visibleMapId, setVisibleMapId] = useState<string | number | null>(null);
+  const [projects, setProjects] = useState<ProjectDoc[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const run = async () => {
+      setLoading(true);
+      setError(null);
+      try {
+        const res = await databases.listDocuments({
+          databaseId: DATABASE_CONFIG.databaseId,
+          collectionId: DATABASE_CONFIG.projectsCollectionId,
+          queries: [Query.equal("status", "OPEN")],
+        });
+        setProjects(res.documents || []);
+      } catch (e: any) {
+        setError(e?.message ?? "読み込みに失敗しました");
+      } finally {
+        setLoading(false);
+      }
+    };
+    run();
+  }, []);
 
   // ボタンがクリックされたときに地図の表示/非表示を切り替える関数
   const handleMapToggle = (id: number) => {
@@ -160,34 +186,69 @@ export default function VolunteerListPage() {
   return (
     <main className="p-6 bg-gray-50 min-h-screen">
       <h1 className="text-3xl font-bold mb-8 text-center">ボランティア一覧</h1>
+      {error && <div className="text-center text-red-600 mb-4">{error}</div>}
 
       <div className="grid gap-6 grid-cols-2 md:grid-cols-3 max-w-6xl mx-auto">
-        {volunteers.map((v) => (
-          <div key={v.id} className="bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-lg transition flex flex-col">
-            
+        {[...projects.map((p, idx) => ({
+          id: p.$id as any,
+          href: `/requests/${p.$id}`,
+          title: p.title,
+          organizer: p.organizer || (p.requesterId ?? ""),
+          date: p.event_date || p.deadline || "",
+          place: p.place || "",
+          genre: p.genre || (p.category ?? ""),
+          position: typeof p.lat === 'number' && typeof p.lng === 'number' ? [p.lat, p.lng] : undefined,
+          imageUrl: typeof p.image_url === 'string' && p.image_url ? (p.image_url.startsWith('http') ? p.image_url : getProjectImagePreviewUrl(p.image_url)) : "",
+        })), ...volunteers].map((v) => (
+          <div key={String((v as any).id)} className="bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-lg transition flex flex-col">
+            {v.href ? (
+              <Link href={v.href} className="block">
+                {v.imageUrl ? (
+                  <img src={v.imageUrl} alt={v.title} className="w-full h-40 object-cover" />
+                ) : (
+                  <div className="w-full h-40 bg-gray-200 flex items-center justify-center text-gray-500">No Image</div>
+                )}
+              </Link>
+            ) : (
+              <>
+                {v.imageUrl ? (
+                  <img src={v.imageUrl} alt={v.title} className="w-full h-40 object-cover" />
+                ) : (
+                  <div className="w-full h-40 bg-gray-200 flex items-center justify-center text-gray-500">No Image</div>
+                )}
+              </>
+            )}
             {/* テキスト情報 */}
             <div className="p-5 flex flex-col flex-grow">
-              <span className="inline-block mb-2 px-3 py-1 text-xs font-medium bg-blue-100 text-blue-800 rounded-full self-start">{v.genre}</span>
-              <h2 className="text-xl font-semibold mt-1 mb-1">{v.title}</h2>
-              <p className="text-sm text-gray-600 mb-3">{v.organizer}</p>
+              {v.genre && (
+                <span className="inline-block mb-2 px-3 py-1 text-xs font-medium bg-blue-100 text-blue-800 rounded-full self-start">{v.genre}</span>
+              )}
+              {v.href ? (
+                <Link href={v.href} className="text-xl font-semibold mt-1 mb-1 hover:underline">{v.title}</Link>
+              ) : (
+                <h2 className="text-xl font-semibold mt-1 mb-1">{v.title}</h2>
+              )}
+              {v.organizer && <p className="text-sm text-gray-600 mb-3">{v.organizer}</p>}
               <div className="space-y-2 text-sm text-gray-800 mt-auto">
-                <p className="flex items-center gap-2"><Calendar className="w-4 h-4 flex-shrink-0" /> {v.date}</p>
+                {v.date && <p className="flex items-center gap-2"><Calendar className="w-4 h-4 flex-shrink-0" /> {v.date}</p>}
                 <div className="flex items-center justify-between gap-2">
-                  <p className="flex items-center gap-2"><MapPin className="w-4 h-4 flex-shrink-0" /> {v.place}</p>
-                  <button 
-                    onClick={() => handleMapToggle(v.id)}
-                    className="text-xs text-blue-600 hover:text-blue-800 font-semibold px-2 py-1 rounded-md bg-blue-50 hover:bg-blue-100 transition-colors whitespace-nowrap"
-                  >
-                    {visibleMapId === v.id ? '地図を隠す' : '場所を表示'}
-                  </button>
+                  {v.place && <p className="flex items-center gap-2"><MapPin className="w-4 h-4 flex-shrink-0" /> {v.place}</p>}
+                  {v.position && (
+                    <button
+                      onClick={() => handleMapToggle((v as any).id)}
+                      className="text-xs text-blue-600 hover:text-blue-800 font-semibold px-2 py-1 rounded-md bg-blue-50 hover:bg-blue-100 transition-colors whitespace-nowrap"
+                    >
+                      {visibleMapId === (v as any).id ? '地図を隠す' : '場所を表示'}
+                    </button>
+                  )}
                 </div>
               </div>
             </div>
 
             {/* 地図 (条件付きで表示) */}
-            {visibleMapId === v.id && (
+            {visibleMapId === v.id && v.position && (
               <div className="w-full h-48 border-t">
-                <Map position={v.position} popupText={v.title} />
+                <Map position={v.position as [number, number]} popupText={v.title} />
               </div>
             )}
           </div>
