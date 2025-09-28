@@ -1,52 +1,46 @@
-"use client";
+'use client';
 
-import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
-import { UserIcon } from "lucide-react";
-import { useUser } from "@/contexts/UserContext";
+import { useAuth } from '@/contexts/AuthContext';
+import { Button } from '@/components/ui/button';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
 export default function UserMenu() {
-  const { user, isLoading, logout } = useUser();
-
-  const handleLogout = async () => {
-    try {
-      await logout();
-    } catch (error) {
-      console.error('ログアウトエラー:', error);
-    }
-  };
+  const { user, profile, isLoading, isAuthenticated, logout } = useAuth();
 
   if (isLoading) {
+    return <div className="w-8 h-8 bg-gray-200 rounded-full animate-pulse" />;
+  }
+
+  if (!isAuthenticated || !user || !profile) {
     return (
-      <Avatar className="size-8">
-        <AvatarFallback>
-          <UserIcon className="size-4" />
-        </AvatarFallback>
-      </Avatar>
+      <div className="flex gap-2">
+        <a href={`/login?mode=login&redirect=${encodeURIComponent(typeof window !== 'undefined' ? window.location.pathname + window.location.search : '/')}`}>
+          <Button asChild variant="outline" size="sm">
+            <span>ログイン</span>
+          </Button>
+        </a>
+        <a href={`/login?mode=signup&redirect=${encodeURIComponent(typeof window !== 'undefined' ? window.location.pathname + window.location.search : '/')}`}>
+          <Button asChild size="sm">
+            <span>新規登録</span>
+          </Button>
+        </a>
+      </div>
     );
   }
 
   return (
-    <div className="flex items-center gap-2">
-      <Avatar className="size-8" onClick={() => {
-        console.log("UserMenu clicked", user);
-      }}>
-        <AvatarImage src={user?.avatar_url} />
-        <AvatarFallback>
-          {user?.username ? user.username.charAt(0).toUpperCase() : <UserIcon className="size-4" />}
-        </AvatarFallback>
+    <div className="flex items-center gap-3">
+      <Avatar className="w-8 h-8">
+        <AvatarImage src={profile.avatar_url || '/KoeTasu-light.png'} alt={profile.username} />
+        <AvatarFallback>{profile.username.charAt(0).toUpperCase()}</AvatarFallback>
       </Avatar>
-      {user && (
-        <div className="flex flex-col">
-          <span className="text-sm font-medium">{user.username}</span>
-          <span className="text-xs text-muted-foreground">{user.role}</span>
-        </div>
-      )}
-      <button
-        onClick={handleLogout}
-        className="text-xs text-muted-foreground hover:text-foreground"
-      >
+      <div className="hidden md:block">
+        <p className="text-sm font-medium">{profile.username}</p>
+        <p className="text-xs text-muted-foreground">{profile.role}</p>
+      </div>
+      <Button variant="outline" size="sm" onClick={logout}>
         ログアウト
-      </button>
+      </Button>
     </div>
   );
 }

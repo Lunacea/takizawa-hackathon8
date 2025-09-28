@@ -28,5 +28,6 @@
   "prisma.showPrismaDataPlatformNotification": false,
   "[json]": {
     "editor.defaultFormatter": "biomejs.biome"
-  }
+  },
+  "cSpell.words": ["appwrite", "oklch"]
 }

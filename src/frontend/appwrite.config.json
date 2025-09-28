@@ -1,0 +1,122 @@
+{
+    "endpoint": "https://sfo.cloud.appwrite.io/v1",
+    "projectId": "68d7aca8003554483772",
+    "projectName": "Our Knot",
+    "databases": [
+        {
+            "$id": "our-knot-db",
+            "name": "OurKnotDB",
+            "enabled": true
+        }
+    ],
+    "collections": [
+        {
+            "$id": "profiles",
+            "databaseId": "our-knot-db",
+            "name": "Profiles",
+            "enabled": true,
+            "$permissions": [
+                "read(\"any\")",
+                "create(\"users\")"
+            ],
+            "documentSecurity": true,
+            "attributes": [
+                { "key": "username", "type": "string", "size": 100, "required": true, "array": false },
+                { "key": "avatar_url", "type": "string", "size": 2048, "required": false, "array": false },
+                { "key": "bio", "type": "string", "size": 1000, "required": false, "array": false },
+                {
+                    "key": "role",
+                    "type": "string",
+                    "size": 50,
+                    "required": true,
+                    "elements": ["REQUESTER", "PARTICIPANT"],
+                    "array": false
+                }
+            ],
+            "indexes": []
+        },
+        {
+            "$id": "projects",
+            "databaseId": "our-knot-db",
+            "name": "Projects",
+            "enabled": true,
+            "$permissions": [
+                "read(\"any\")",
+                "create(\"users\")"
+            ],
+            "documentSecurity": true,
+            "attributes": [
+                { "key": "requesterId", "type": "string", "size": 255, "required": true, "array": false },
+                { "key": "title", "type": "string", "size": 255, "required": true, "array": false },
+                { "key": "description", "type": "string", "size": 10000, "required": true, "array": false },
+                {
+                    "key": "status",
+                    "type": "string",
+                    "size": 50,
+                    "required": true,
+                    "elements": ["DRAFT", "OPEN", "CLOSED", "COMPLETED"],
+                    "array": false
+                },
+                { "key": "participation_reward", "type": "string", "size": 255, "required": true, "array": false },
+                { "key": "bonus_reward", "type": "string", "size": 255, "required": false, "array": false }
+            ],
+            "indexes": [
+                { "key": "idx_requester", "type": "key", "attributes": ["requesterId"], "orders": ["ASC"] }
+            ]
+        },
+        {
+            "$id": "project_participants",
+            "databaseId": "our-knot-db",
+            "name": "ProjectParticipants",
+            "enabled": true,
+            "$permissions": [
+                "read(\"users\")",
+                "create(\"users\")"
+            ],
+            "documentSecurity": true,
+            "attributes": [
+                { "key": "projectId", "type": "string", "size": 255, "required": true, "array": false },
+                { "key": "userId", "type": "string", "size": 255, "required": true, "array": false }
+            ],
+            "indexes": [
+                {
+                    "key": "idx_project_user_unique",
+                    "type": "unique",
+                    "attributes": ["projectId", "userId"]
+                }
+            ]
+        },
+        {
+            "$id": "submissions",
+            "databaseId": "our-knot-db",
+            "name": "Submissions",
+            "enabled": true,
+            "$permissions": [
+                "read(\"users\")",
+                "create(\"users\")"
+            ],
+            "documentSecurity": true,
+            "attributes": [
+                { "key": "userId", "type": "string", "size": 255, "required": true, "array": false },
+                { "key": "content", "type": "string", "size": 10000, "required": true, "array": false },
+                { "key": "is_adopted", "type": "boolean", "required": true, "array": false }
+            ],
+            "indexes": []
+        },
+        {
+            "$id": "point_transactions",
+            "databaseId": "our-knot-db",
+            "name": "PointTransactions",
+            "enabled": true,
+            "$permissions": [],
+            "documentSecurity": true,
+            "attributes": [
+                { "key": "userId", "type": "string", "size": 255, "required": true, "array": false },
+                { "key": "amount", "type": "integer", "required": true, "array": false },
+                { "key": "description", "type": "string", "size": 255, "required": true, "array": false }
+            ],
+            "indexes": []
+        }
+    ],
+    "functions": []
+}
