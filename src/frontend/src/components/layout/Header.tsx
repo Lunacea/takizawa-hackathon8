@@ -13,18 +13,20 @@ export default function Header() {
     setIsDark(localStorage.getItem("theme") === "dark");
   }, [isDark]);
   return (
-    <header className="flex items-center justify-between p-4 border-b border-border">
-      <div className="flex items-center gap-2">
-        <Link href="/" className="flex items-center gap-2">
-          <Image src={isDark ? "/KoeTasu-dark.png" : "/KoeTasu-light.png"} alt="KOETASU" width={32} height={32} />
-          <span className="text-2xl font-bold">KOETASU</span>
-        </Link>
+    <header className="px-4 py-2">
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <Link href="/" className="flex items-center gap-2">
+            <Image src={isDark ? "/KoeTasu-dark.png" : "/KoeTasu-light.png"} alt="KOETASU" width={32} height={32} />
+            <span className="text-2xl font-bold">KOETASU</span>
+          </Link>
+        </div>
+        <div className="flex items-center gap-4">
+          <ThemeToggle />
+          <UserMenu />
+        </div>
       </div>
-      <div className="flex items-center gap-4">
-        <Nav />
-        <ThemeToggle />
-        <UserMenu />
-      </div>
+      <Nav />
     </header>
   );
 }

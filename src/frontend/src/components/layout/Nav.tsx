@@ -1,8 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
-import { HomeIcon, PlusIcon, XIcon, MenuIcon } from "lucide-react";
+import { usePathname } from "next/navigation";
+import { ListIcon, PlusIcon, HandshakeIcon } from "lucide-react";
 
 // ナビゲーションアイテムの型定義
 interface NavItem {
@@ -15,131 +15,67 @@ interface NavItem {
 const navItems: NavItem[] = [
   {
     href: "/",
-    label: "ホーム",
-    icon: HomeIcon,
+    label: "リクエスト一覧",
+    icon: ListIcon,
   },
   {
     href: "/post-request",
-    label: "投稿リクエスト",
+    label: "依頼を投稿",
     icon: PlusIcon,
   },
   {
-    href: "/error-request",
-    label: "エラーリクエスト",
-    icon: XIcon,
-  },
+    href: "/participating",
+    label: "参加中の依頼",
+    icon: HandshakeIcon,
+  }
 ];
 
-// スタイル定数
+// スタイル定数（タブバー用）
 const styles = {
-  desktopLink: "flex items-center gap-2 hover:text-primary transition-colors",
-  mobileLink: "flex items-center gap-3 p-3 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors",
-  hamburgerButton: "flex items-center justify-center w-10 h-10 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors",
-  closeButton: "flex items-center justify-center w-8 h-8 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors",
+  container: "border-gray-200 dark:border-gray-800 border-b",
+  tabBar: "flex items-center justify-between",
+  tabLink: "flex flex-1 flex-col items-center gap-1 py-2 text-xs transition-colors border-b-2 border-transparent select-none",
   icon: "w-5 h-5",
-  hamburgerIcon: "w-6 h-6",
+  active: "text-primary border-primary cursor-default pointer-events-none",
+  inactive: "text-gray-600 dark:text-gray-300 hover:text-primary",
 } as const;
 
 // ナビゲーションリンクコンポーネント
 interface NavLinkProps {
   item: NavItem;
-  onClick?: () => void;
-  className?: string;
-  iconClassName?: string;
+  active: boolean;
 }
 
-function NavLink({ item, onClick, className, iconClassName }: NavLinkProps) {
+function NavLink({ item, active }: NavLinkProps) {
   const IconComponent = item.icon;
-
   return (
     <Link
       href={item.href}
-      onClick={onClick}
-      className={className}
+      aria-current={active ? "page" : undefined}
+      aria-disabled={active || undefined}
+      tabIndex={active ? -1 : 0}
+      className={`${styles.tabLink} ${active ? styles.active : styles.inactive}`}
     >
-      <IconComponent className={iconClassName} />
+      <IconComponent className={styles.icon} />
       <span>{item.label}</span>
     </Link>
   );
 }
 
 export default function Nav() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
-  };
-
-  const closeMenu = () => {
-    setIsMenuOpen(false);
+  const pathname = usePathname();
+  const isActive = (href: string) => {
+    if (!pathname) return false;
+    return pathname === href || pathname.startsWith(`${href}/`);
   };
 
   return (
-    <nav className="relative">
-      {/* デスクトップ用ナビゲーション */}
-      <div className="hidden md:flex gap-4">
-        {navItems.map((item) => (
-          <NavLink
-            key={item.href}
-            item={item}
-            className={styles.desktopLink}
-            iconClassName={styles.icon}
-          />
-        ))}
-      </div>
-
-      {/* モバイル用ハンバーガーメニュー */}
-      <div className="md:hidden">
-        {/* ハンバーガーボタン */}
-        <button
-          onClick={toggleMenu}
-          className={styles.hamburgerButton}
-          aria-label="メニューを開く"
-        >
-          <MenuIcon className={styles.hamburgerIcon} />
-        </button>
-
-        {/* オーバーレイ */}
-        {isMenuOpen && (
-          <div
-            className="fixed inset-0 bg-black/50 z-40"
-            onClick={closeMenu}
-          />
-        )}
-
-        {/* メニュー */}
-        <div
-          className={`fixed top-0 right-0 h-full w-64 bg-white dark:bg-gray-900 shadow-lg transform transition-transform duration-300 ease-in-out z-50 ${isMenuOpen ? "translate-x-0" : "translate-x-full"
-            }`}
-        >
-          <div className="flex flex-col h-full">
-            {/* ヘッダー */}
-            <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700">
-              <h2 className="text-lg font-semibold">メニュー</h2>
-              <button
-                onClick={closeMenu}
-                className={styles.closeButton}
-                aria-label="メニューを閉じる"
-              >
-                <XIcon className={styles.icon} />
-              </button>
-            </div>
-
-            {/* ナビゲーションリンク */}
-            <div className="flex-1 p-4">
-              <div className="space-y-2">
-                {navItems.map((item) => (
-                  <NavLink
-                    key={item.href}
-                    item={item}
-                    onClick={closeMenu}
-                    className={styles.mobileLink}
-                    iconClassName={styles.icon}
-                  />
-                ))}
-              </div>
-            </div>
-          </div>
+    <nav className="w-full" aria-label="メインタブ ナビゲーション">
+      <div className={styles.container}>
+        <div className={styles.tabBar}>
+          {navItems.map((item) => (
+            <NavLink key={item.href} item={item} active={isActive(item.href)} />
+          ))}
         </div>
       </div>
     </nav>
