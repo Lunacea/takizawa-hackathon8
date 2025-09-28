@@ -91,13 +91,25 @@ export default function RequestDetail() {
                 }
                 return;
               }
+              if (!slug) {
+                setJoinMessage(
+                  "プロジェクトIDが不明です。ページを再読み込みしてください。"
+                );
+                return;
+              }
+              if (!user || !user.$id) {
+                setJoinMessage(
+                  "ユーザー情報の取得に失敗しました。再度ログインしてください。"
+                );
+                return;
+              }
               try {
                 setIsJoining(true);
                 await databases.createDocument({
                   databaseId: DATABASE_CONFIG.databaseId,
                   collectionId: DATABASE_CONFIG.projectParticipantsCollectionId,
                   documentId: ID.unique(),
-                  data: { projectId: String(slug), userId: user.$id },
+                  data: { projectId: String(slug), userId: String(user.$id) },
                 });
                 setJoinMessage("参加申請を受け付けました");
                 setAlreadyJoined(true);
