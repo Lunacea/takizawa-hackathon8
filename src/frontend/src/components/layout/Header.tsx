@@ -14,7 +14,7 @@ export default function Header() {
   }, [isDark]);
   return (
     <header>
-      <div className="px-4 py-2 mb-2 flex items-center justify-between">
+      <div className="px-4 py-2 my-2 flex items-center justify-between">
         <div className="flex items-center gap-2">
           <Link href="/" className="flex items-center gap-2">
             <Image src={isDark ? "/KoeTasu-dark.png" : "/KoeTasu-light.png"} alt="KOETASU" width={32} height={32} />

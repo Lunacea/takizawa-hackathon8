@@ -2,7 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
-import { databases, DATABASE_CONFIG } from "@/lib/appwrite/appwrite";
+import { databases, DATABASE_CONFIG, ID, Query } from "@/lib/appwrite/appwrite";
+import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 import {
   Table,
@@ -17,6 +18,10 @@ export default function RequestDetail() {
   const [data, setData] = useState(null);
   const [error, setError] = useState(null);
   const [profile, setProfile] = useState(null);
+  const { user, isAuthenticated, isLoading } = useAuth();
+  const [isJoining, setIsJoining] = useState(false);
+  const [joinMessage, setJoinMessage] = useState("");
+  const [alreadyJoined, setAlreadyJoined] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -37,12 +42,30 @@ export default function RequestDetail() {
         } catch (_) {
           setProfile(null);
         }
+        // 参加済みチェック
+        try {
+          if (isAuthenticated && user) {
+            const res = await databases.listDocuments({
+              databaseId: DATABASE_CONFIG.databaseId,
+              collectionId: DATABASE_CONFIG.projectParticipantsCollectionId,
+              queries: [
+                Query.equal("projectId", String(slug)),
+                Query.equal("userId", user.$id),
+              ],
+            });
+            setAlreadyJoined((res.total || 0) > 0);
+          } else {
+            setAlreadyJoined(false);
+          }
+        } catch (_) {
+          setAlreadyJoined(false);
+        }
       } catch (e) {
         setError(e?.message ?? "読み込みに失敗しました");
       }
     };
     if (slug) fetchData();
-  }, [slug]);
+  }, [slug, isAuthenticated, user]);
 
   if (error) return <div className="m-8 text-red-600">{error}</div>;
   if (!data) return <div className="m-8">読み込み中...</div>;
@@ -54,9 +77,62 @@ export default function RequestDetail() {
           <h1 className="text-4xl font-bold p-4">{data.title}</h1>
           <h2 className="text-2xl font-bold p-4">{data.status}</h2>
         </div>
-        <Button className="bg-red-400 text-white font-bold px-8 py-3 rounded hover:bg-red-300">
-          応募する
-        </Button>
+        <div className="flex items-center gap-3">
+          <Button
+            className="bg-red-400 text-white font-bold px-8 py-3 rounded hover:bg-red-300 disabled:opacity-60"
+            disabled={isJoining || isLoading || alreadyJoined}
+            onClick={async () => {
+              setJoinMessage("");
+              if (!isAuthenticated) {
+                if (typeof window !== "undefined") {
+                  window.location.href = `/login?redirect=/requests/${slug}`;
+                }
+                return;
+              }
+              try {
+                setIsJoining(true);
+                await databases.createDocument({
+                  databaseId: DATABASE_CONFIG.databaseId,
+                  collectionId: DATABASE_CONFIG.projectParticipantsCollectionId,
+                  documentId: ID.unique(),
+                  data: { projectId: String(slug), userId: user.$id },
+                });
+                setJoinMessage("参加申請を受け付けました");
+                setAlreadyJoined(true);
+              } catch (e) {
+                const code = e && e.code ? e.code : undefined;
+                const msg = e?.message || "参加に失敗しました";
+                // 一意制約違反（既に参加済み）
+                if (
+                  code === 409 ||
+                  (typeof msg === "string" &&
+                    /unique|already|exists|duplicate/i.test(msg))
+                ) {
+                  setJoinMessage("既に参加済みです");
+                  setAlreadyJoined(true);
+                } else {
+                  setJoinMessage(msg);
+                }
+              } finally {
+                setIsJoining(false);
+              }
+            }}
+          >
+            {alreadyJoined ? "応募済み" : isJoining ? "送信中..." : "応募する"}
+          </Button>
+          {alreadyJoined && (
+            <Button
+              className="bg-blue-500 text-white font-bold px-8 py-3 rounded hover:bg-blue-400"
+              onClick={() => {
+                if (typeof window !== "undefined") {
+                  window.location.href = `/requests/participating/${slug}`;
+                }
+              }}
+            >
+              コミュニティに入る
+            </Button>
+          )}
+        </div>
       </div>
 
       <div className="space-y-2 p-4">
@@ -116,6 +192,11 @@ export default function RequestDetail() {
           )}
         </TableBody>
       </Table>
+      {joinMessage && (
+        <div className="p-4 text-sm text-blue-700 bg-blue-50 rounded">
+          {joinMessage}
+        </div>
+      )}
     </div>
   );
 }

@@ -24,7 +24,7 @@ const navItems: NavItem[] = [
     icon: PlusIcon,
   },
   {
-    href: "/participating",
+    href: "/requests/participating",
     label: "参加中の依頼",
     icon: HandshakeIcon,
   }

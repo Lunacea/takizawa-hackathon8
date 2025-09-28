@@ -1,4 +1,4 @@
-import { Client, Account, Databases, ID, type Models } from 'appwrite';
+import { Client, Account, Databases, ID, Query, type Models } from 'appwrite';
 import appwriteConfig from '../../../appwrite.config.json';
 
 // 型: appwrite.config.json の最小限の構造
@@ -12,7 +12,7 @@ interface AppwriteCliConfig {
 }
 
 // 再エクスポート
-export { ID };
+export { ID, Query };
 
 // Appwriteクライアントの初期化（appwrite.config.json を参照）
 const cfg = appwriteConfig as unknown as AppwriteCliConfig;
@@ -31,11 +31,14 @@ const resolvedProfilesCollectionId = cfg.collections.find((c: AppwriteCollection
   ?? 'profiles';
 const resolvedProjectsCollectionId = cfg.collections.find((c: AppwriteCollectionConfig) => c.$id === 'projects')?.$id
   ?? 'projects';
+const resolvedProjectParticipantsCollectionId = cfg.collections.find((c: AppwriteCollectionConfig) => c.$id === 'project_participants')?.$id
+  ?? 'project_participants';
 
 export const DATABASE_CONFIG = {
   databaseId: resolvedDatabaseId,
   profilesCollectionId: resolvedProfilesCollectionId,
   projectsCollectionId: resolvedProjectsCollectionId,
+  projectParticipantsCollectionId: resolvedProjectParticipantsCollectionId,
 } as const;
 
 // ユーザープロファイルの型定義
