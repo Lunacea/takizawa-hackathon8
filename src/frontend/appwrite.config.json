@@ -37,6 +37,85 @@
             "indexes": []
         },
         {
+            "$id": "messages",
+            "databaseId": "our-knot-db",
+            "name": "Messages",
+            "enabled": true,
+            "$permissions": [
+                "read(\"users\")",
+                "create(\"users\")"
+            ],
+            "documentSecurity": true,
+            "attributes": [
+                { "key": "projectId", "type": "string", "size": 255, "required": true, "array": false },
+                { "key": "userId", "type": "string", "size": 255, "required": true, "array": false },
+                { "key": "content", "type": "string", "size": 5000, "required": true, "array": false }
+            ],
+            "indexes": [
+                { "key": "idx_projectId", "type": "key", "attributes": ["projectId"] }
+            ]
+        },
+        {
+            "$id": "community_updates",
+            "databaseId": "our-knot-db",
+            "name": "CommunityUpdates",
+            "enabled": true,
+            "$permissions": [
+                "read(\"users\")",
+                "create(\"users\")"
+            ],
+            "documentSecurity": true,
+            "attributes": [
+                { "key": "projectId", "type": "string", "size": 255, "required": true, "array": false },
+                { "key": "userId", "type": "string", "size": 255, "required": true, "array": false },
+                { "key": "content", "type": "string", "size": 10000, "required": true, "array": false }
+            ],
+            "indexes": [
+                { "key": "idx_projectId", "type": "key", "attributes": ["projectId"] }
+            ]
+        },
+        {
+            "$id": "likes",
+            "databaseId": "our-knot-db",
+            "name": "Likes",
+            "enabled": true,
+            "$permissions": [
+                "read(\"users\")",
+                "create(\"users\")",
+                "delete(\"users\")"
+            ],
+            "documentSecurity": true,
+            "attributes": [
+                { "key": "targetType", "type": "string", "size": 50, "required": true, "elements": ["update"], "array": false },
+                { "key": "targetId", "type": "string", "size": 255, "required": true, "array": false },
+                { "key": "userId", "type": "string", "size": 255, "required": true, "array": false }
+            ],
+            "indexes": [
+                { "key": "idx_target", "type": "key", "attributes": ["targetType", "targetId"] },
+                { "key": "idx_unique_like", "type": "unique", "attributes": ["targetType", "targetId", "userId"] }
+            ]
+        },
+        {
+            "$id": "community_links",
+            "databaseId": "our-knot-db",
+            "name": "CommunityLinks",
+            "enabled": true,
+            "$permissions": [
+                "read(\"users\")",
+                "create(\"users\")"
+            ],
+            "documentSecurity": true,
+            "attributes": [
+                { "key": "projectId", "type": "string", "size": 255, "required": true, "array": false },
+                { "key": "title", "type": "string", "size": 255, "required": true, "array": false },
+                { "key": "url", "type": "string", "size": 2048, "required": true, "array": false },
+                { "key": "addedBy", "type": "string", "size": 255, "required": true, "array": false }
+            ],
+            "indexes": [
+                { "key": "idx_projectId", "type": "key", "attributes": ["projectId"] }
+            ]
+        },
+        {
             "$id": "comments",
             "databaseId": "our-knot-db",
             "name": "Comments",
@@ -141,14 +220,22 @@
             "databaseId": "our-knot-db",
             "name": "PointTransactions",
             "enabled": true,
-            "$permissions": [],
+            "$permissions": [
+                "read(\"users\")",
+                "create(\"users\")"
+            ],
             "documentSecurity": true,
             "attributes": [
+                { "key": "projectId", "type": "string", "size": 255, "required": false, "array": false },
                 { "key": "userId", "type": "string", "size": 255, "required": true, "array": false },
                 { "key": "amount", "type": "integer", "required": true, "array": false },
                 { "key": "description", "type": "string", "size": 255, "required": true, "array": false }
             ],
-            "indexes": []
+            "indexes": [
+                { "key": "idx_user", "type": "key", "attributes": ["userId"] },
+                { "key": "idx_project", "type": "key", "attributes": ["projectId"] },
+                { "key": "idx_unique_award", "type": "unique", "attributes": ["projectId", "userId", "description"] }
+            ]
         }
     ],
     "functions": [],

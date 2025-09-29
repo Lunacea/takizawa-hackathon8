@@ -151,9 +151,20 @@ const volunteers: Volunteer[] = [
 ];
 
 type ProjectDoc = any;
+interface DisplayItem {
+  id: string;
+  title: string;
+  organizer?: string;
+  date?: string;
+  place?: string;
+  genre?: string;
+  position?: [number, number];
+  imageUrl?: string;
+  href?: string;
+}
 
 export default function VolunteerListPage() {
-  const [visibleMapId, setVisibleMapId] = useState<string | number | null>(null);
+  const [visibleMapId, setVisibleMapId] = useState<string | null>(null);
   const [projects, setProjects] = useState<ProjectDoc[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -178,8 +189,35 @@ export default function VolunteerListPage() {
     run();
   }, []);
 
+  const items: DisplayItem[] = useMemo(() => {
+    const projectItems: DisplayItem[] = (projects || []).map((p: any) => ({
+      id: String(p.$id),
+      href: `/requests/${p.$id}`,
+      title: String(p.title ?? ""),
+      organizer: (p.organizer as string) || (p.requesterId as string) || "",
+      date: (p.event_date as string) || (p.deadline as string) || "",
+      place: (p.place as string) || "",
+      genre: (p.genre as string) || (p.category as string) || "",
+      position: typeof p.lat === 'number' && typeof p.lng === 'number' ? [p.lat, p.lng] : undefined,
+      imageUrl: typeof p.image_url === 'string' && p.image_url
+        ? (p.image_url.startsWith('http') ? p.image_url : getProjectImagePreviewUrl(p.image_url))
+        : undefined,
+    }));
+    const mockItems: DisplayItem[] = volunteers.map((v) => ({
+      id: `mock-${v.id}`,
+      title: v.title,
+      organizer: v.organizer,
+      date: v.date,
+      place: v.place,
+      genre: v.genre,
+      position: v.position,
+      imageUrl: v.imageUrl || undefined,
+    }));
+    return [...projectItems, ...mockItems];
+  }, [projects]);
+
   // ボタンがクリックされたときに地図の表示/非表示を切り替える関数
-  const handleMapToggle = (id: number) => {
+  const handleMapToggle = (id: string) => {
     setVisibleMapId(prevId => (prevId === id ? null : id));
   };
 
@@ -189,18 +227,8 @@ export default function VolunteerListPage() {
       {error && <div className="text-center text-red-600 mb-4">{error}</div>}
 
       <div className="grid gap-6 grid-cols-2 md:grid-cols-3 max-w-6xl mx-auto">
-        {[...projects.map((p, idx) => ({
-          id: p.$id as any,
-          href: `/requests/${p.$id}`,
-          title: p.title,
-          organizer: p.organizer || (p.requesterId ?? ""),
-          date: p.event_date || p.deadline || "",
-          place: p.place || "",
-          genre: p.genre || (p.category ?? ""),
-          position: typeof p.lat === 'number' && typeof p.lng === 'number' ? [p.lat, p.lng] : undefined,
-          imageUrl: typeof p.image_url === 'string' && p.image_url ? (p.image_url.startsWith('http') ? p.image_url : getProjectImagePreviewUrl(p.image_url)) : "",
-        })), ...volunteers].map((v) => (
-          <div key={String((v as any).id)} className="bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-lg transition flex flex-col">
+        {items.map((v) => (
+          <div key={v.id} className="bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-lg transition flex flex-col">
             {v.href ? (
               <Link href={v.href} className="block">
                 {v.imageUrl ? (
@@ -235,10 +263,10 @@ export default function VolunteerListPage() {
                   {v.place && <p className="flex items-center gap-2"><MapPin className="w-4 h-4 flex-shrink-0" /> {v.place}</p>}
                   {v.position && (
                     <button
-                      onClick={() => handleMapToggle((v as any).id)}
+                      onClick={() => handleMapToggle(v.id)}
                       className="text-xs text-blue-600 hover:text-blue-800 font-semibold px-2 py-1 rounded-md bg-blue-50 hover:bg-blue-100 transition-colors whitespace-nowrap"
                     >
-                      {visibleMapId === (v as any).id ? '地図を隠す' : '場所を表示'}
+                      {visibleMapId === v.id ? '地図を隠す' : '場所を表示'}
                     </button>
                   )}
                 </div>

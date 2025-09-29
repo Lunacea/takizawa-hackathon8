@@ -16,7 +16,7 @@ export { ID, Query };
 
 // Appwriteクライアントの初期化（appwrite.config.json を参照）
 const cfg = appwriteConfig as unknown as AppwriteCliConfig;
-const client = new Client()
+export const client = new Client()
   .setEndpoint(cfg.endpoint)
   .setProject(cfg.projectId);
 
@@ -36,6 +36,16 @@ const resolvedProjectParticipantsCollectionId = cfg.collections.find((c: Appwrit
   ?? 'project_participants';
 const resolvedCommentsCollectionId = cfg.collections.find((c: AppwriteCollectionConfig) => c.$id === 'comments')?.$id
   ?? 'comments';
+const resolvedCommunityUpdatesCollectionId = cfg.collections.find((c: AppwriteCollectionConfig) => c.$id === 'community_updates')?.$id
+  ?? 'community_updates';
+const resolvedLikesCollectionId = cfg.collections.find((c: AppwriteCollectionConfig) => c.$id === 'likes')?.$id
+  ?? 'likes';
+const resolvedCommunityLinksCollectionId = cfg.collections.find((c: AppwriteCollectionConfig) => c.$id === 'community_links')?.$id
+  ?? 'community_links';
+const resolvedMessagesCollectionId = cfg.collections.find((c: AppwriteCollectionConfig) => c.$id === 'messages')?.$id
+  ?? 'messages';
+const resolvedPointTransactionsCollectionId = cfg.collections.find((c: AppwriteCollectionConfig) => c.$id === 'point_transactions')?.$id
+  ?? 'point_transactions';
 
 export const DATABASE_CONFIG = {
   databaseId: resolvedDatabaseId,
@@ -43,6 +53,11 @@ export const DATABASE_CONFIG = {
   projectsCollectionId: resolvedProjectsCollectionId,
   projectParticipantsCollectionId: resolvedProjectParticipantsCollectionId,
   commentsCollectionId: resolvedCommentsCollectionId,
+  communityUpdatesCollectionId: resolvedCommunityUpdatesCollectionId,
+  likesCollectionId: resolvedLikesCollectionId,
+  communityLinksCollectionId: resolvedCommunityLinksCollectionId,
+  messagesCollectionId: resolvedMessagesCollectionId,
+  pointTransactionsCollectionId: resolvedPointTransactionsCollectionId,
 } as const;
 
 // バケットID解決

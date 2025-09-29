@@ -78,7 +78,7 @@ export default function RequestDetail() {
     <div className="max-w-5xl mx-auto p-6 space-y-10">
       {/* ヘッダーセクション (変更なし) */}
       <div className="bg-gradient-to-r from-blue-50 to-blue-100 p-8 rounded-2xl shadow-md">
-         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
           <div>
             <h1 className="text-3xl md:text-4xl font-bold text-gray-900">
               {data.title}
@@ -149,12 +149,12 @@ export default function RequestDetail() {
 
       {/* 画像 (変更なし) */}
       {data.image_url && (
-         <div className="flex justify-center">
+        <div className="flex justify-center">
           <img
             className="w-full max-w-2xl rounded-lg shadow"
             src={
               typeof data.image_url === "string" &&
-              data.image_url.startsWith("http")
+                data.image_url.startsWith("http")
                 ? data.image_url
                 : getProjectImagePreviewUrl(String(data.image_url))
             }
@@ -165,7 +165,7 @@ export default function RequestDetail() {
 
       {/* 詳細情報カード (変更なし) */}
       <section className="bg-white shadow rounded-2xl p-6">
-         <h2 className="text-xl font-semibold mb-4 text-gray-800">
+        <h2 className="text-xl font-semibold mb-4 text-gray-800">
           プロジェクト情報
         </h2>
         <ul className="space-y-3">
@@ -212,8 +212,8 @@ function StructuredDescription({ description }: { description: string }) {
   return (
     <section className="bg-white shadow rounded-2xl p-6 space-y-6">
       <DescriptionPart icon={<FileText />} title="概要" content={overview} />
-      <DescriptionPart icon={<ListOrdered />} title="詳細" content={requestTasks.replace("【詳細】","").trimStart() } /> {/* 修正: ListDetails -> ListOrdered */}
-      <DescriptionPart icon={<Target />} title="依頼したいこと" content={details.replace("【依頼したいこと】","").trimStart()} />
+      <DescriptionPart icon={<ListOrdered />} title="詳細" content={requestTasks.replace("【詳細】", "").trimStart()} /> {/* 修正: ListDetails -> ListOrdered */}
+      <DescriptionPart icon={<Target />} title="依頼したいこと" content={details.replace("【依頼したいこと】", "").trimStart()} />
     </section>
   );
 }
@@ -255,7 +255,7 @@ function InfoRow({
   label: string;
   value: string;
 }) {
-    return (
+  return (
     <li className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
       <span className="text-gray-600">{icon}</span>
       <span className="font-medium text-gray-800 w-28">{label}</span>

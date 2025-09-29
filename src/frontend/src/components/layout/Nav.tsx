@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ListIcon, PlusIcon, HandshakeIcon } from "lucide-react";
+import { ListIcon, PlusIcon, HandshakeIcon, GiftIcon } from "lucide-react";
 
 // ナビゲーションアイテムの型定義
 interface NavItem {
@@ -27,7 +27,12 @@ const navItems: NavItem[] = [
     href: "/requests/participating",
     label: "参加中の依頼",
     icon: HandshakeIcon,
-  }
+  },
+  {
+    href: "/exchange",
+    label: "ポイントと交換",
+    icon: GiftIcon,
+  },
 ];
 
 // スタイル定数（タブバー用）
