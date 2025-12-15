@@ -64,7 +64,7 @@ jobs:
           bunx --yes @anchore/syft ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }} -o spdx-json=sbom-sha.spdx.json || true
 
       - name: Upload SBOM artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: sbom-spdx
           path: |
